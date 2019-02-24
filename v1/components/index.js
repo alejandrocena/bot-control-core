@@ -6,6 +6,7 @@ const TYPES = {
 };
 
 module.export = {
+  TYPES,
   factory: type => {
     switch (type) {
       case TYPES.CC_MOTOR: return require('./actuators/motors/cc');
@@ -15,6 +16,5 @@ module.export = {
       default:
         throw `Unknown type '${type}'`;
     }
-  },
-  TYPES
+  }
 };
