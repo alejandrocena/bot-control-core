@@ -8,7 +8,7 @@ module.exports = (manifest) => {
   if(!valid) {
     throw 'Invalid Manifest';
   }
-  const browser = manifest_browser(manifest);
+  const browser = browser(manifest);
   return {
     server: (server) => {
 
