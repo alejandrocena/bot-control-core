@@ -1,5 +1,5 @@
 const request = require('request-promise');
-const responder = require('../../../express-http-responder');
+const responder = require('../../http-responder');
 
 const PATH = `/v1/components/actuators/lights/:id`;
 

@@ -1,14 +1,9 @@
 const components = require('./components');
-const browser = require('./manifest-browser');
-const validator = require('./manifest-validator');
+const manifest_browser = require('./manifest');
 const events = require('./events');
 
 module.exports = (manifest) => {
-  const valid = validator(manifest);
-  if(!valid) {
-    throw 'Invalid Manifest';
-  }
-  const browser = browser(manifest);
+  const browser = manifest_browser(manifest);
   return {
     server: (server) => {
 
@@ -17,5 +12,6 @@ module.exports = (manifest) => {
 
     },
     browser,
+    Events
   }
 };
