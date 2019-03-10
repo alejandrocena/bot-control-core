@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/alejandrocena/bot-control-core#readme",
   "dependencies": {
+    "express": "^4.16.4",
     "joi": "^14.3.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4"

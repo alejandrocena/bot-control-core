@@ -1,6 +1,5 @@
-const components = require('./components');
 const manifest_browser = require('./manifest');
-const {emit,on,Events} = require('./events');
+const {on,Events} = require('./events');
 
 module.exports = (manifest) => {
   const browser = manifest_browser(manifest);

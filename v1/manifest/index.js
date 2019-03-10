@@ -1,3 +1,8 @@
 const browser = require('./browser');
 
-module.exports = (manifest) => browser(manifest);
+module.exports = (manifest) => {
+
+  // validate schema
+  
+  return browser(manifest);
+};

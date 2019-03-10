@@ -9,7 +9,7 @@ const Events = {
 module.exports = {
   Events,
   on: Emitter.on,
-  emit:(event,payload) => {
+  emit: (event,payload) => {
     const valid = Object.keys(Events).filter(evt => Events[evt] === event).length === 1;
     if(!valid) throw `Unknown Event ${event}`;
     Emitter.emit(event,payload);
