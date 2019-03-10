@@ -9,10 +9,10 @@ module.export = {
   TYPES,
   factory: type => {
     switch (type) {
-      case TYPES.CC_MOTOR: return require('./actuators/motors/cc');
-      case TYPES.LED: return require('./actuators/lights/led');
+      case TYPES.CC_MOTOR:          return require('./actuators/motors/cc');
+      case TYPES.LED:               return require('./actuators/lights/led');
       case TYPES.ULTRASONIC_SENSOR: return require('./sensors/distance/ultrasonic');
-      case TYPES.BUMPER: return require('./sensors/bumpers/boolean');
+      case TYPES.BUMPER:            return require('./sensors/bumpers/boolean');
       default:
         throw `Unknown type '${type}'`;
     }

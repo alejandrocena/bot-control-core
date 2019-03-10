@@ -1,24 +1,28 @@
 const request = require('request-promise');
-const responder = require('../../../express-http-responder');
+const {Events,emit} = require('../events');
+const http_responder = require('./http-responder');
 
 const ACTIONS = {READ: 'READ'};
-
-const SENDER_DEFAULT = {
-  read: () => console.log(ACTIONS.READ)
-};
 
 module.export = (PATH) => ({
   sender: (Endpoint,id) => {
     const uri = Endpoint + PATH.replace(':id', id);
     return {
-      read: () => request({method: 'GET',uri, qs: {action:ACTIONS.READ},simple: true,json: true})
+      read: () => {
+        const setup = {method: 'GET',uri, qs: {action:ACTIONS.READ},simple: true,json: true};
+        emit(Events.COMPONENT_REQUESTED,setup);
+        return request(setup)
+      }
     }
   },
-  receiver: (server,id, doit = SENDER_DEFAULT) => server.put(PATH.replace(':id', id),(req,res) => {
+  receiver: (server,id) => server.put(PATH.replace(':id', id),(req,res) => {
     const {action} = req.query;
+    const responder = http_responder(res);
     try {
       switch (action) {
-        case ACTIONS.READ: responder.data(doit.read()); break;
+        case ACTIONS.READ:
+          emit(Events.COMPONENT_REACHED,{id,action,responder});
+          break;
         default: responder.error(res,`Unknown action '${action}'`);
       }
     } catch (ex) {
