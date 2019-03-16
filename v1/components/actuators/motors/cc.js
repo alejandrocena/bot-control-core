@@ -16,42 +16,46 @@ const SENDER_DEFAULT = {
   stop: () => console.log(ACTIONS.STOP)
 };
 
-module.export = {
-  sender: (Endpoint,id) => {
-    const uri = Endpoint + PATH.replace(':id', id);
-    return {
-      forward: () => {
-        const setup = {method: 'PUT',uri, qs: {action:ACTIONS.FORWARD},simple: true,json: true};
-        emit(Events.COMPONENT_REQUESTED,setup);
-        return request(setup);
-      },
-      backward: () => {
-        const setup = {method: 'PUT',uri,qs: {action:ACTIONS.BACKWARD},simple: true,json: true};
-        emit(Events.COMPONENT_REQUESTED,setup);
-        return request(setup);
-      },
-      stop: () => {
-        const setup = {method: 'PUT',uri,qs: {action:ACTIONS.STOP},simple: true,json: true};
-        emit(Events.COMPONENT_REQUESTED,setup);
-        return request(setup);
+module.exports = (id)=> {
+  return {
+    sender: (Endpoint) => {
+      const uri = Endpoint + PATH.replace(':id', id);
+      return {
+        forward: () => {
+          const setup = {method: 'PUT', uri, qs: {action: ACTIONS.FORWARD}, simple: true, json: true};
+          emit(Events.COMPONENT_REQUESTED, setup);
+          return request(setup);
+        },
+        backward: () => {
+          const setup = {method: 'PUT', uri, qs: {action: ACTIONS.BACKWARD}, simple: true, json: true};
+          emit(Events.COMPONENT_REQUESTED, setup);
+          return request(setup);
+        },
+        stop: () => {
+          const setup = {method: 'PUT', uri, qs: {action: ACTIONS.STOP}, simple: true, json: true};
+          emit(Events.COMPONENT_REQUESTED, setup);
+          return request(setup);
+        }
       }
-    }
-  },
-  receiver: (server,id,doit = SENDER_DEFAULT) => server.put(PATH.replace(':id', id),(req,res) => {
-    const {action} = req.query;
-    const responder = http_responder(res);
-    try {
-      switch (action) {
-        case ACTIONS.FORWARD:
-        case ACTIONS.BACKWARD:
-        case ACTIONS.STOP:
-          emit(Events.COMPONENT_REACHED,{id,action,responder});
-          responder.ok(res);
-          break;
-        default: responder.error(res,`Unknown action '${action}'`);
+    },
+    receiver: (server) => server.put(PATH.replace(':id', id), (req, res) => {
+      const {action} = req.query;
+      const responder = http_responder(res);
+      try {
+        switch (action) {
+          case ACTIONS.FORWARD:
+          case ACTIONS.BACKWARD:
+          case ACTIONS.STOP:
+            emit(Events.COMPONENT_REACHED, {id, action, responder});
+            responder.ok(res);
+            break;
+          default:
+            responder.error(res, `Unknown action '${action}'`);
+        }
+      } catch (ex) {
+        responder.error(res, ex);
       }
-    } catch (ex) {
-      responder.error(res,ex);
-    }
-  })
+    }),
+    state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
+  }
 };

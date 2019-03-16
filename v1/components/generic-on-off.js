@@ -4,7 +4,7 @@ const http_responder = require('./http-responder');
 
 const ACTIONS = {READ: 'READ'};
 
-module.export = (PATH) => ({
+module.exports = (PATH) => ({
   sender: (Endpoint,id) => {
     const uri = Endpoint + PATH.replace(':id', id);
     return {

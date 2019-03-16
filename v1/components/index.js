@@ -16,8 +16,7 @@ const factory = type => {
   }
 };
 
-module.export = {
-  TYPES,
-  sender: (type) => factory(type).sender,
-  receiver: (type) => factory(type).receiver
+module.exports = (type) => {
+  const {sender,receiver} = factory(type);
+  return {TYPES,sender,receiver};
 };

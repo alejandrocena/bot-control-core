@@ -4,8 +4,8 @@ const http_responder = require('./http-responder');
 
 const ACTIONS = {READ: 'READ'};
 
-module.export = (PATH) => ({
-  sender: (Endpoint,id) => {
+module.exports = (PATH,id) => ({
+  sender: (Endpoint) => {
     const uri = Endpoint + PATH.replace(':id', id);
     return {
       read: () => {
@@ -15,7 +15,7 @@ module.export = (PATH) => ({
       }
     }
   },
-  receiver: (server,id) => server.put(PATH.replace(':id', id),(req,res) => {
+  receiver: (server) => server.put(PATH.replace(':id', id),(req,res) => {
     const {action} = req.query;
     const responder = http_responder(res);
     try {
@@ -28,5 +28,6 @@ module.export = (PATH) => ({
     } catch (ex) {
       responder.error(res,ex);
     }
-  })
+  }),
+  state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });
