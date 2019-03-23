@@ -1,11 +1,12 @@
+
 const TYPES = {
-  CC_MOTOR : 'actuator.motor.cc',
-  LED : 'actuator.lights.led',
-  ULTRASONIC_SENSOR : 'sensor.ultrasonic',
-  BUMPER : 'sensor.bumper'
+  CC_MOTOR : require('./actuators/motors/cc')('none').type,
+  LED : require('./actuators/lights/led')('none').type,
+  ULTRASONIC_SENSOR : require('./sensors/distance/ultrasonic')('none').type,
+  BUMPER : require('./sensors/bumpers/boolean')('none').type
 };
 
-const factory = type => {
+const factory = (type) => {
   switch (type) {
     case TYPES.CC_MOTOR:          return require('./actuators/motors/cc');
     case TYPES.LED:               return require('./actuators/lights/led');
@@ -16,7 +17,4 @@ const factory = type => {
   }
 };
 
-module.exports = (type) => {
-  const {sender,receiver} = factory(type);
-  return {TYPES,sender,receiver};
-};
+module.exports = factory;

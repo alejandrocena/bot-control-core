@@ -5,8 +5,7 @@ const server = new mosca.Server(settings);
 
 server.on('ready', () => `Mosca server is up and running on port ${settings.port}`);
 
-module.exports = (manifest) => {
-  const browser = Browser(manifest);
+module.exports = (browser) => {
   const {port} = browser.getBroker();
   const settings = {port};
   const server = new mosca.Server(settings);

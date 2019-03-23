@@ -5,11 +5,10 @@ module.exports = manifest => {
   if(!valid) {
     throw 'Invalid Manifest';
   }
+
   return {
-    getComponents: () => manifest.components,
+    ... manifest,
+    getComponentsByType: (type) => manifest.components.filter(component => component.type === type),
     getComponentById: (id) => manifest.components.filter(component => component.id === id).pop(),
-    getComponentByType: (type) => manifest.components.filter(component => component.type === type),
-    getServer: () => () => manifest.server,
-    getBroker: () => () => manifest.state,
   }
 };

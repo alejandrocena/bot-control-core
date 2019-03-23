@@ -1,32 +1,34 @@
 const request = require('request-promise');
 const {Events,emit} = require('../events');
-const http_responder = require('./http-responder');
+const component_events = require('./component-events');
 
-const ACTIONS = {READ: 'READ'};
+const ACTIONS = {
+  ON: 'ON',
+  OFF: 'OFF'
+};
 
-module.exports = (PATH) => ({
-  sender: (Endpoint,id) => {
-    const uri = Endpoint + PATH.replace(':id', id);
+module.exports = (PATH,TYPE,id,options={}) => ({
+  ...component_events(id),
+  ACTIONS,
+  type: TYPE,
+  sender: (Endpoint) => {
+    const uri = `${Endpoint}${PATH.replace(':id', id)}`;
     return {
-      read: () => {
-        const setup = {method: 'GET',uri, qs: {action:ACTIONS.READ},simple: true,json: true};
+      on: () => {
+        const setup = {method: 'PUT',uri: `${uri}/${ACTIONS.ON}`,simple: true,json: true};
         emit(Events.COMPONENT_REQUESTED,setup);
         return request(setup);
+      },
+      off: () => {
+        const setup = {method: 'PUT',uri: `${uri}/${ACTIONS.OFF}`,qs: {action:ACTIONS.OFF},simple: true,json: true};
+        emit(Events.COMPONENT_REQUESTED,setup);
+        return request(setup)
       }
     }
   },
-  receiver: (server,id) => server.put(PATH.replace(':id', id),(req,res) => {
-    const {action} = req.query;
-    const responder = http_responder(res);
-    try {
-      switch (action) {
-        case ACTIONS.READ:
-          emit(Events.COMPONENT_REACHED,{id,action,responder});
-          break;
-        default: responder.error(res,`Unknown action '${action}'`);
-      }
-    } catch (ex) {
-      responder.error(res,ex);
-    }
-  })
+  receiver: (server) => {
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.ON}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,res}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.OFF}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.OFF,options,res}));
+  },
+  state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });
