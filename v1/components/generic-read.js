@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const {Events,emit} = require('../events');
 const component_events = require('./component-events');
+const responder = require('../server/http-responder');
 
 const ACTIONS = {READ: 'READ'};
 
@@ -19,7 +20,7 @@ module.exports = (PATH,TYPE,id,options={}) => ({
     }
   },
   receiver: (server) => {
-    server.get(`${PATH.replace(':id', id)}/${ACTIONS.READ}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,res}));
+    server.get(`${PATH.replace(':id', id)}/${ACTIONS.READ}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,responder:responder(res)}));
   },
   state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });

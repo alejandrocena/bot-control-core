@@ -4,6 +4,9 @@ const event_logger = require('./event-logger');
 event_logger(messages);
 
 module.exports = (manifest) =>  {
+  if(manifest.debug === true) {
+    event_logger(messages);
+  }
   const browser = require('./manifest')(manifest);
   return {
     browser,

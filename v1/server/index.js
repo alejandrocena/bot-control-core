@@ -25,7 +25,7 @@ module.exports = (browser) => {
     component.receiver(server);
     return component;
   }).map( component => emit(Events.SERVER_COMPONENT_LOADED,{component,server}));
-  emit(Events.SERVER_COMPONENTS_LOAD_COMPLETE,{components:loaded,server});
-  server.listen(port, () => console.log(`Server listening on port ${port}`));
+  emit(Events.SERVER_COMPONENTS_LOAD_COMPLETE,{components:loaded,server,port});
+  server.listen(port);
   return server;
 };

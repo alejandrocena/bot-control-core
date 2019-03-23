@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const {Events,emit} = require('../events');
 const component_events = require('./component-events');
+const responder = require('../server/http-responder');
 
 const ACTIONS = {
   ON: 'ON',
@@ -27,8 +28,8 @@ module.exports = (PATH,TYPE,id,options={}) => ({
     }
   },
   receiver: (server) => {
-    server.put(`${PATH.replace(':id', id)}/${ACTIONS.ON}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,res}));
-    server.put(`${PATH.replace(':id', id)}/${ACTIONS.OFF}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.OFF,options,res}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.ON}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,responder:responder(res)}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.OFF}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.OFF,options,responder:responder(res)}));
   },
   state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });
