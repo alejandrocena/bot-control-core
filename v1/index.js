@@ -14,9 +14,9 @@ module.exports = (manifest) =>  {
     server: () => {
       const server = require('./server')(browser);
       if(manifest.discovery !== undefined) {
-        discovery(manifest);
+        return discovery(manifest).then(res => server);
       }
-      return server;
+      return Promise.resolve(server);
     },
     state: () => {
       return require('./state')(browser);
