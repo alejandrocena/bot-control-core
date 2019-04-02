@@ -1,7 +1,7 @@
 const messages = require('./events');
 const event_logger = require('./event-logger');
+const discovery = require('./discovery');
 
-event_logger(messages);
 
 module.exports = (manifest) =>  {
   if(manifest.debug === true) {
@@ -12,7 +12,11 @@ module.exports = (manifest) =>  {
     browser,
     messages,
     server: () => {
-      return require('./server')(browser);
+      const server = require('./server')(browser);
+      if(manifest.discovery !== undefined) {
+        discovery(manifest);
+      }
+      return server;
     },
     state: () => {
       return require('./state')(browser);

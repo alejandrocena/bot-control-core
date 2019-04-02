@@ -11,6 +11,7 @@ const ACTIONS = {
 
 module.exports = (PATH,TYPE,id,options={}) => ({
   ...component_events(id),
+  id,
   ACTIONS,
   type: TYPE,
   sender: (Endpoint) => {

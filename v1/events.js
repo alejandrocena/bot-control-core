@@ -14,7 +14,7 @@ const Events = {
 
 };
 
-module.exports = {
+const events = {
   Events,
   on: (event,payload) => {
     return Emitter.on(event,payload);
@@ -25,3 +25,4 @@ module.exports = {
     return Emitter.emit(event,payload);
   },
 };
+module.exports = events;

@@ -3,8 +3,8 @@
 
 module.exports = ({on,Events}) => {
 
-  on(Events.SERVER_COMPONENT_LOADED,({component,server,id}) => {
-    console.info(`Server Component type: ${component.type} id: ${id} Loaded`);
+  on(Events.SERVER_COMPONENT_LOADED,({component,server}) => {
+    console.info(`Server Component type: ${component.type} id: ${component.id} Loaded`);
   });
 
   on(Events.SERVER_COMPONENTS_LOAD_COMPLETE,({components,server}) => {
@@ -16,11 +16,11 @@ module.exports = ({on,Events}) => {
     server._router.stack.filter(r => r.route !== undefined).map(r => r.route).map(({path,methods}) => console.info(`[${Object.keys(methods).map(method => method.toUpperCase()).join(',')}]::${path}`))
   });
 
-  on(Events.COMPONENT_REACHED,({id,action,responder}) => {
+  on(Events.COMPONENT_REACHED,({id,action}) => {
     console.info(`Component ${id} Reached :: ${action}.`);
   });
 
-  on(Events.COMPONENT_REACHED_ERROR,({id,action,responder}) => {
+  on(Events.COMPONENT_REACHED_ERROR,({id,action}) => {
     console.info(`Component ${id} Reached :: ${action}.`);
   });
 
