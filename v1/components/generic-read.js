@@ -21,7 +21,7 @@ module.exports = (PATH,TYPE,id,options={}) => ({
     }
   },
   receiver: (server) => {
-    server.get(`${PATH.replace(':id', id)}/${ACTIONS.READ}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,responder:responder(res)}));
+    server.get(`${PATH.replace(':id', id)}/${ACTIONS.READ}`,(req,res) => emit(Events.COMPONENT_REACHED,{id,action:ACTIONS.ON,options,args:req.query,responder:responder(res)}));
   },
   state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });

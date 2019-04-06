@@ -35,9 +35,9 @@ module.exports = (PATH,TYPE,id,options={}) => ({
     }
   },
   receiver: (server) => {
-    server.put(`${PATH.replace(':id', id)}/${ACTIONS.FORWARD}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.FORWARD,options,responder:responder(res)}));
-    server.put(`${PATH.replace(':id', id)}/${ACTIONS.BACKWARD}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.BACKWARD,options,responder:responder(res)}));
-    server.put(`${PATH.replace(':id', id)}/${ACTIONS.STOP}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.STOP,options,responder:responder(res)}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.FORWARD}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.FORWARD,options,args:req.query,responder:responder(res)}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.BACKWARD}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.BACKWARD,options,args:req.query,responder:responder(res)}));
+    server.put(`${PATH.replace(':id', id)}/${ACTIONS.STOP}`, (req, res) => emit(Events.COMPONENT_REACHED, {id,action:ACTIONS.STOP,options,args:req.query,responder:responder(res)}));
   },
   state: (state) => emit(Events.COMPONENT_CHANGED,{id,state})
 });
