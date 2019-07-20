@@ -1,15 +1,3 @@
-const Versions = ['v1'];
+const core = require(`./src`);
 
-const validate_version = (version) => {
-  const valid = Versions.reduce((valid = false, valid_version) => (valid || valid_version === version));
-  if(!valid) {
-    throw `Invalid Version '${version}'`
-  }
-};
-
-module.exports = (manifest) => {
-  const version = manifest.version;
-  validate_version(version);
-  const core = require(`./${version}`);
-  return core(manifest);
-};
+module.exports = (manifest) => core(manifest);

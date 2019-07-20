@@ -1,50 +1,56 @@
-const schema = {
+{
+  "id": "robot-mock",
   "name": "mocked",
-  "version": "0.1",
+  "version": "v1",
   "description": "A Mocked Bot for Development and Test Purpose",
   "state": {
-    "type": "mqtt",
     "port": "1883"
   },
+  "debug": true,
   "server": {
-    "type": "http",
-    "port": "1883"
+    "port": "9000"
   },
   "components":[
     {
-      "type": "sensors.ultrasonic",
+      "type": "sensors:distance:ultrasonic",
       "id": "ultrasonic-front",
       "description": "Ultrasonic sensor model RS74"
     },
     {
-      "type": "sensors.bumper",
+      "type": "sensors:bumpers:boolean",
       "id": "bumper-front-left",
       "description": "Standard Metalic Bumper"
     },
     {
-      "type": "sensors.bumper",
+      "type": "sensors:bumpers:boolean",
       "id": "bumper-front-right",
       "description": "Standard Metalic Bumper"
     },
     {
-      "type": "actuators.motor.cc",
+      "type": "actuators:motors:cc",
       "id": "motor-left",
       "description": "CC Generic motor"
     },
     {
-      "type": "actuators.motor.cc",
+      "type": "actuators:motors:cc",
       "id": "motor-right",
       "description": "CC Generic motor"
     },
     {
-      "type": "actuators.led",
+      "type": "actuators:lights:led",
       "id": "led-front-left",
       "description": "Luminic LED"
     },
     {
-      "type": "actuators.led",
+      "type": "actuators:lights:led",
       "id": "led-front-right",
       "description": "Luminic LED"
     }
+  ],
+  "actions": [
+    {
+      "type": "movement",
+      "description": "Robot moves"
+    }
   ]
-};
+}

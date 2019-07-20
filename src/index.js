@@ -2,7 +2,6 @@ const messages = require('./events');
 const event_logger = require('./event-logger');
 const discovery = require('./discovery');
 
-
 module.exports = (manifest) =>  {
   if(manifest.debug === true) {
     event_logger(messages);

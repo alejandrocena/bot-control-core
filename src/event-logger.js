@@ -32,4 +32,13 @@ module.exports = ({on,Events}) => {
     console.info(`Component ${id} Status Changed :: ${JSON.stringify(state)}.`)
   });
 
+  on(Events.ACTION_REACHED,(payload) => {
+    console.info(`Action Reeached :: ${JSON.stringify(payload)}.`);
+  });
+
+  on(Events.ACTION_REQUESTED,(payload) => {
+    console.info(`Action Requested :: ${JSON.stringify(payload)}.`);
+  });
+
+
 };
